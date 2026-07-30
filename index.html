@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CorpoFin – Equity Research & Financial Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f1e3d;--navy-light:#1a2f5e;--blue:#1e4fc8;--blue-light:#2d6ef0;--silver:#c8d0e0;--silver-light:#e8edf7;--gold:#c9a840;--white:#fff;--text-muted:#7a8ba8;--bg:#f4f6fb;--card:#fff;--border:#dde3f0;--green:#16a34a;--red:#dc2626}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--navy);line-height:1.6}
+nav{background:var(--navy);position:sticky;top:0;z-index:100;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;box-shadow:0 2px 16px rgba(0,0,0,.25)}
+.nav-brand{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+.nav-logo{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)}
+.nav-name{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--white)}.nav-name span{color:var(--gold)}
+.nav-links{display:flex;gap:.25rem;list-style:none}
+.nav-links a{color:var(--silver);text-decoration:none;font-size:.875rem;font-weight:500;padding:.5rem 1rem;border-radius:6px;transition:all .2s}
+.nav-links a:hover{background:rgba(255,255,255,.1);color:var(--white)}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 60%,#0d2452 100%);color:#fff;padding:5rem 2rem 0;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(30,79,200,.25) 0%,transparent 70%)}
+.hero-content{position:relative;z-index:1;max-width:720px;margin:0 auto;padding-bottom:3rem}
+.hero-eyebrow{display:inline-block;background:rgba(201,168,64,.15);color:var(--gold);border:1px solid rgba(201,168,64,.4);font-size:.75rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:.35rem 1rem;border-radius:20px;margin-bottom:1.5rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;line-height:1.2;margin-bottom:1rem}
+.hero h1 span{color:var(--gold)}
+.hero p{color:var(--silver);font-size:1.05rem;max-width:560px;margin:0 auto 2rem}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--blue-light);color:#fff;padding:.75rem 1.75rem;border-radius:8px;font-size:.9rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all .2s;display:inline-block}
+.btn-primary:hover{background:#1a5de0;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--silver);padding:.75rem 1.75rem;border-radius:8px;font-size:.9rem;font-weight:600;text-decoration:none;border:1px solid rgba(200,208,224,.4);cursor:pointer;transition:all .2s;display:inline-block}
+.btn-outline:hover{border-color:var(--silver);color:#fff}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08);border-top:1px solid rgba(255,255,255,.1);margin-top:3rem}
+.hero-stat{padding:1.5rem 1rem;text-align:center;background:rgba(255,255,255,.03)}
+.hero-stat-value{font-size:1.6rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif}
+.hero-stat-label{font-size:.75rem;color:var(--silver);margin-top:.25rem}
+section{padding:4rem 2rem;max-width:1200px;margin:0 auto}
+.section-header{margin-bottom:2.5rem}
+.section-eyebrow{font-size:.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue-light);margin-bottom:.5rem}
+.section-title{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:700;color:var(--navy)}
+.section-line{width:48px;height:3px;background:var(--gold);border-radius:2px;margin-top:.75rem}
+.reports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem}
+.report-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .25s;cursor:pointer}
+.report-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(15,30,61,.1);border-color:var(--blue-light)}
+.report-header{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:1rem}
+.report-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.report-icon.pharma{background:#fef9ee}.report-icon.fmcg{background:#f0fdf4}
+.report-info{flex:1;min-width:0}
+.report-company{font-size:1rem;font-weight:700;color:var(--navy)}
+.report-sector{font-size:.75rem;color:var(--text-muted);margin-top:.15rem}
+.report-badges{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+.badge{font-size:.65rem;font-weight:600;padding:.2rem .6rem;border-radius:20px;letter-spacing:.5px}
+.badge-buy{background:#dcfce7;color:#15803d}.badge-ignore{background:#fee2e2;color:#991b1b}.badge-sector{background:var(--silver-light);color:var(--navy-light)}
+.report-body{padding:1.25rem 1.5rem}
+.report-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem}
+.metric-item{text-align:center}
+.metric-value{font-size:1rem;font-weight:700;color:var(--navy)}
+.metric-label{font-size:.65rem;color:var(--text-muted);margin-top:.1rem}
+.report-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--silver-light)}
+.target-price{font-size:.8rem;color:var(--text-muted)}.target-value{font-weight:700;color:var(--navy)}
+.btn-view-report{font-size:.75rem;font-weight:600;color:var(--blue-light);background:none;border:1px solid var(--blue-light);padding:.35rem .85rem;border-radius:6px;cursor:pointer;transition:all .2s}
+.btn-view-report:hover{background:var(--blue-light);color:#fff}
+#models{background:var(--navy);padding:4rem 0}
+#models .inner{max-width:1200px;margin:0 auto;padding:0 2rem}
+#models .section-eyebrow{color:var(--gold)}
+#models .section-title{color:#fff}
+.models-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin-top:2rem}
+.model-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:1.5rem;transition:all .25s}
+.model-card:hover{background:rgba(255,255,255,.08);border-color:var(--gold);transform:translateY(-2px)}
+.model-card-top{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+.model-emoji{font-size:1.5rem}
+.model-company{font-size:.95rem;font-weight:700;color:#fff}
+.model-type{font-size:.7rem;color:var(--silver)}
+.model-highlights{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.highlight-label{font-size:.65rem;color:var(--text-muted);letter-spacing:.5px}
+.highlight-value{font-size:.85rem;font-weight:600;color:var(--silver-light)}
+.highlight-value.up{color:#4ade80}.highlight-value.down{color:#f87171}
+.model-footer{margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center}
+.model-tag{font-size:.65rem;padding:.2rem .6rem;border-radius:20px;font-weight:600}
+.tag-dcf{background:rgba(201,168,64,.2);color:var(--gold)}.tag-rel{background:rgba(45,110,240,.25);color:#93c5fd}
+.btn-dl{font-size:.7rem;font-weight:600;color:var(--gold);background:none;border:1px solid rgba(201,168,64,.4);padding:.3rem .75rem;border-radius:6px;cursor:pointer;transition:all .2s}
+.btn-dl:hover{background:var(--gold);color:var(--navy)}
+#extractor{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+#extractor section{max-width:920px}
+.extractor-box{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;overflow:hidden}
+.extractor-header{background:var(--navy);color:#fff;padding:1.25rem 1.75rem;display:flex;align-items:center;gap:.75rem}
+.extractor-header h3{font-size:1rem;font-weight:600}
+.extractor-header p{font-size:.8rem;color:var(--silver);margin-top:.15rem}
+.extractor-body{padding:2rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem}
+.form-label{font-size:.78rem;font-weight:600;color:var(--navy)}
+.form-input,.form-select{padding:.65rem .9rem;border:1px solid var(--border);border-radius:8px;font-size:.875rem;font-family:'Inter',sans-serif;background:#fff;color:var(--navy);transition:border-color .2s}
+.form-input:focus,.form-select:focus{outline:none;border-color:var(--blue-light);box-shadow:0 0 0 3px rgba(45,110,240,.1)}
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:#fff;position:relative}
+.upload-zone:hover{border-color:var(--blue-light);background:#f0f5ff}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2.5rem;margin-bottom:.75rem}
+.upload-title{font-size:.95rem;font-weight:600;color:var(--navy)}
+.upload-sub{font-size:.78rem;color:var(--text-muted);margin-top:.25rem}
+.upload-fname{font-size:.8rem;color:var(--green);font-weight:600;margin-top:.5rem;display:none}
+.extract-btn{width:100%;padding:.85rem;background:var(--blue-light);color:#fff;border:none;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:1.25rem;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.extract-btn:hover{background:var(--blue)}.extract-btn:disabled{opacity:.55;cursor:not-allowed}
+.spinner-wrap{display:none;text-align:center;padding:2rem;font-size:.875rem;color:var(--text-muted)}
+.spinner-wrap.show{display:block}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--blue-light);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto .75rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.steps{list-style:none;margin-top:1rem;font-size:.78rem}
+.steps li{padding:.3rem 0;color:var(--text-muted);transition:color .3s}
+.steps li.active{color:var(--blue-light);font-weight:600}
+.steps li.done{color:var(--green)}
+.err-box{background:#fee2e2;border:1px solid #fca5a5;border-radius:10px;padding:1rem 1.25rem;font-size:.82rem;color:#991b1b;margin-top:1rem;display:none;white-space:pre-wrap}
+.err-box.show{display:block}
+.result-box{margin-top:1.5rem;display:none}
+.result-box.show{display:block}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.result-title{font-size:.9rem;font-weight:700;color:var(--navy)}
+.result-badge{background:var(--navy);color:#fff;font-size:.7rem;font-weight:600;padding:.3rem .75rem;border-radius:20px}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1rem;margin-bottom:1.5rem}
+.rc{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1rem}
+.rc-label{font-size:.65rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
+.rc-value{font-size:1.05rem;font-weight:700;color:var(--navy);margin-top:.25rem}
+.rc-sub{font-size:.75rem;margin-top:.15rem;color:var(--green)}
+.tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+.tbl{width:100%;border-collapse:collapse;font-size:.82rem}
+.tbl th{background:var(--navy);color:#fff;padding:.6rem .85rem;text-align:left;font-size:.75rem;font-weight:600}
+.tbl td{padding:.6rem .85rem;border-bottom:1px solid var(--border);color:var(--navy)}
+.tbl tr:hover td{background:var(--silver-light)}
+.insights-box{margin-top:1.25rem}
+.insight-item{font-size:.8rem;color:var(--navy);padding:.6rem .85rem;background:var(--silver-light);border-radius:6px;border-left:3px solid var(--blue-light);margin-bottom:.5rem}
+.disclaimer{margin-top:1.25rem;padding:1rem;background:var(--silver-light);border-radius:8px;font-size:.78rem;color:var(--text-muted)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:720px;max-height:85vh;overflow-y:auto;box-shadow:0 32px 64px rgba(0,0,0,.3)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.75rem;border-bottom:1px solid var(--border);background:var(--navy);color:#fff;border-radius:16px 16px 0 0;position:sticky;top:0}
+.modal-title{font-size:1rem;font-weight:700}
+.modal-close{background:none;border:none;color:var(--silver);font-size:1.5rem;cursor:pointer;line-height:1}
+.modal-body{padding:1.75rem}
+.section-alt{background:#fff}
+footer{background:var(--navy);color:var(--silver);text-align:center;padding:2rem;font-size:.8rem}
+footer strong{color:var(--gold);font-family:'Playfair Display',serif}
+@media(max-width:768px){.hero-stats{grid-template-columns:repeat(2,1fr)}.form-row{grid-template-columns:1fr}.nav-links{display:none}.models-grid,.reports-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-brand">
+    <img class="nav-logo" id="navLogo" src="" alt="CorpoFin">
+    <span class="nav-name">Corpo<span>Fin</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#reports">Research Reports</a></li>
+    <li><a href="#models">Financial Models</a></li>
+    <li><a href="#extractor">Data Extractor</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-content">
+    <span class="hero-eyebrow">📊 Indian Equity Research</span>
+    <h1>Institutional-Grade <span>Equity Research</span> & Financial Models</h1>
+    <p>Deep-dive analysis, DCF valuations, and AI-powered financial extraction for Indian listed companies.</p>
+    <div class="hero-btns">
+      <a href="#reports" class="btn-primary">View Research Reports</a>
+      <a href="#extractor" class="btn-outline">Extract Financials ↗</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-value">2</div><div class="hero-stat-label">Reports Published</div></div>
+    <div class="hero-stat"><div class="hero-stat-value">2</div><div class="hero-stat-label">Financial Models</div></div>
+    <div class="hero-stat"><div class="hero-stat-value">DCF</div><div class="hero-stat-label">Valuation Method</div></div>
+    <div class="hero-stat"><div class="hero-stat-value">AI</div><div class="hero-stat-label">Powered Extractor</div></div>
+  </div>
+</div>
+
+<!-- REPORTS -->
+<div id="reports" class="section-alt">
+<section>
+  <div class="section-header">
+    <div class="section-eyebrow">Research Coverage</div>
+    <h2 class="section-title">Equity Research Reports</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="reports-grid">
+    <div class="report-card" onclick="openModal('sunpharma')">
+      <div class="report-header">
+        <div class="report-icon pharma">💊</div>
+        <div class="report-info">
+          <div class="report-company">Sun Pharmaceuticals Industries Ltd.</div>
+          <div class="report-sector">NSE: SUNPHARMA | BSE: 524715</div>
+          <div class="report-badges"><span class="badge badge-ignore">IGNORE / HOLD</span><span class="badge badge-sector">Pharmaceuticals</span></div>
+        </div>
+      </div>
+      <div class="report-body">
+        <div class="report-metrics">
+          <div class="metric-item"><div class="metric-value">₹5,258B</div><div class="metric-label">Revenue FY25</div></div>
+          <div class="metric-item"><div class="metric-value">28.69%</div><div class="metric-label">EBITDA Margin</div></div>
+          <div class="metric-item"><div class="metric-value">20.88%</div><div class="metric-label">Net Margin</div></div>
+        </div>
+        <div style="font-size:.8rem;color:var(--text-muted);line-height:1.5">India's largest pharma company. 10-year DCF, specialty portfolio analysis, and peer benchmarking across 7 listed companies.</div>
+      </div>
+      <div class="report-footer">
+        <div class="target-price">DCF Target: <span class="target-value">₹1,152</span> &nbsp;|&nbsp; CMP: ₹1,818</div>
+        <button class="btn-view-report">View Report →</button>
+      </div>
+    </div>
+    <div class="report-card" onclick="openModal('awl')">
+      <div class="report-header">
+        <div class="report-icon fmcg">🌾</div>
+        <div class="report-info">
+          <div class="report-company">AWL Agri Business Limited</div>
+          <div class="report-sector">NSE: AWL | BSE: 543458</div>
+          <div class="report-badges"><span class="badge badge-buy">BUY</span><span class="badge badge-sector">FMCG / Edible Oils</span></div>
+        </div>
+      </div>
+      <div class="report-body">
+        <div class="report-metrics">
+          <div class="metric-item"><div class="metric-value">₹63,672Cr</div><div class="metric-label">Revenue FY25</div></div>
+          <div class="metric-item"><div class="metric-value">3.90%</div><div class="metric-label">EBITDA Margin</div></div>
+          <div class="metric-item"><div class="metric-value">1.92%</div><div class="metric-label">Net Margin</div></div>
+        </div>
+        <div style="font-size:.8rem;color:var(--text-muted);line-height:1.5">India's leading edible oil & food FMCG company (Fortune, Kohinoor). Strong FY25 earnings turnaround with DCF fair value near CMP.</div>
+      </div>
+      <div class="report-footer">
+        <div class="target-price">DCF Target: <span class="target-value">₹193.84</span> &nbsp;|&nbsp; CMP: ₹183.20</div>
+        <button class="btn-view-report">View Report →</button>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- MODELS -->
+<div id="models">
+<div class="inner">
+  <div class="section-header">
+    <div class="section-eyebrow">Valuation Models</div>
+    <h2 class="section-title">Financial & Valuation Models</h2>
+    <div class="section-line" style="background:var(--gold)"></div>
+  </div>
+  <div class="models-grid">
+    <div class="model-card">
+      <div class="model-card-top"><div class="model-emoji">💊</div><div><div class="model-company">Sun Pharmaceuticals</div><div class="model-type">10-Year DCF + Relative Valuation</div></div></div>
+      <div class="model-highlights">
+        <div><div class="highlight-label">WACC</div><div class="highlight-value">9.52%</div></div>
+        <div><div class="highlight-label">Terminal Growth</div><div class="highlight-value">4.0%</div></div>
+        <div><div class="highlight-label">Revenue FY35E</div><div class="highlight-value up">₹9,953B</div></div>
+        <div><div class="highlight-label">DCF Fair Value</div><div class="highlight-value down">₹1,152</div></div>
+        <div><div class="highlight-label">EV/Revenue</div><div class="highlight-value">₹959/sh</div></div>
+        <div><div class="highlight-label">P/E Implied</div><div class="highlight-value">₹1,268/sh</div></div>
+      </div>
+      <div class="model-footer">
+        <div style="display:flex;gap:.4rem"><span class="model-tag tag-dcf">DCF</span><span class="model-tag tag-rel">Relative</span></div>
+        <button class="btn-dl">⬇ Download</button>
+      </div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-top"><div class="model-emoji">🌾</div><div><div class="model-company">AWL Agri Business</div><div class="model-type">10-Year DCF + Exit Multiple</div></div></div>
+      <div class="model-highlights">
+        <div><div class="highlight-label">WACC</div><div class="highlight-value">12.23%</div></div>
+        <div><div class="highlight-label">Terminal Growth</div><div class="highlight-value">4.0%</div></div>
+        <div><div class="highlight-label">Revenue FY35E</div><div class="highlight-value up">₹2,05,536Cr</div></div>
+        <div><div class="highlight-label">DCF Fair Value</div><div class="highlight-value up">₹193.84</div></div>
+        <div><div class="highlight-label">EV/EBITDA</div><div class="highlight-value">₹477/sh</div></div>
+        <div><div class="highlight-label">P/E Implied</div><div class="highlight-value">₹187/sh</div></div>
+      </div>
+      <div class="model-footer">
+        <div style="display:flex;gap:.4rem"><span class="model-tag tag-dcf">DCF</span><span class="model-tag tag-rel">Relative</span></div>
+        <button class="btn-dl">⬇ Download</button>
+      </div>
+    </div>
+    <div class="model-card" style="border-style:dashed;opacity:.4;cursor:default">
+      <div class="model-card-top"><div class="model-emoji">📈</div><div><div class="model-company" style="color:var(--silver)">Coming Soon</div><div class="model-type">New coverage under development</div></div></div>
+      <div style="text-align:center;padding:2rem 0;color:var(--text-muted);font-size:.85rem">Next model coming soon.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- EXTRACTOR -->
+<div id="extractor">
+<section>
+  <div class="section-header">
+    <div class="section-eyebrow">AI-Powered Tool</div>
+    <h2 class="section-title">Annual Report Financial Extractor</h2>
+    <div class="section-line"></div>
+    <p style="color:var(--text-muted);font-size:.875rem;margin-top:.75rem">Upload any Indian company's annual report PDF and instantly extract key financials — revenue, margins, EPS, ROE and more, structured like Screener.in.</p>
+  </div>
+  <div class="extractor-box">
+    <div class="extractor-header">
+      <span style="font-size:1.5rem">🤖</span>
+      <div><h3>AI Financial Extractor</h3><p>Powered by Claude AI · Reads annual reports & financial summaries</p></div>
+    </div>
+    <div class="extractor-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Company Name</label>
+          <input type="text" id="companyName" class="form-input" placeholder="e.g. Reliance Industries Ltd.">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Financial Year</label>
+          <select id="financialYear" class="form-select">
+            <option value="FY26">FY2025–26</option>
+            <option value="FY25" selected>FY2024–25</option>
+            <option value="FY24">FY2023–24</option>
+            <option value="FY23">FY2022–23</option>
+            <option value="FY22">FY2021–22</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Sector</label>
+          <select id="sector" class="form-select">
+            <option>Pharmaceuticals</option><option>FMCG</option><option>Banking & Finance</option>
+            <option>IT & Technology</option><option>Automobiles</option><option>Energy & Oil</option>
+            <option>Metals & Mining</option><option>Retail</option><option>Infrastructure</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Currency Unit</label>
+          <select id="currency" class="form-select">
+            <option>Crores (₹ Cr)</option><option>Millions (₹ Mn)</option><option>Billions (₹ B)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Upload Annual Report (PDF)</label>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="pdfFile" accept=".pdf" onchange="handleFile(event)">
+          <div class="upload-icon">📄</div>
+          <div class="upload-title">Drop Annual Report PDF here</div>
+          <div class="upload-sub">or click to browse · PDF · up to 50 MB</div>
+          <div class="upload-fname" id="fname"></div>
+        </div>
+      </div>
+      <button class="extract-btn" id="extractBtn" onclick="doExtract()">
+        🔍 Extract Financial Data
+      </button>
+      <div class="err-box" id="errBox"></div>
+      <div class="spinner-wrap" id="spinWrap">
+        <div class="spinner"></div>
+        <div>Analysing annual report with AI…</div>
+        <ul class="steps" id="steps">
+          <li id="s1">📄 Reading PDF document…</li>
+          <li id="s2">🔍 Identifying financial statements…</li>
+          <li id="s3">📊 Extracting metrics & ratios…</li>
+          <li id="s4">✅ Structuring output…</li>
+        </ul>
+      </div>
+      <div class="result-box" id="resultBox">
+        <div class="result-header">
+          <div class="result-title" id="resTitle">Extracted Financials</div>
+          <span class="result-badge" id="resBadge">Company</span>
+        </div>
+        <div class="result-grid" id="resGrid"></div>
+        <div style="font-size:.8rem;font-weight:700;color:var(--navy);margin-bottom:.75rem">📈 Historical Trend</div>
+        <div class="tbl-wrap">
+          <table class="tbl"><thead><tr id="tHead"></tr></thead><tbody id="tBody"></tbody></table>
+        </div>
+        <div id="insightsWrap"></div>
+        <div class="disclaimer">⚠️ AI-extracted data should be cross-verified with the original annual report. Not investment advice.</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="overlay" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="mTitle">Report</div>
+      <button class="modal-close" onclick="document.getElementById('overlay').classList.remove('open')">×</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<footer>
+  <strong>CorpoFin</strong> &nbsp;·&nbsp; Equity Research & Financial Intelligence &nbsp;·&nbsp; Indian Capital Markets<br>
+  <span style="font-size:.72rem;margin-top:.4rem;display:block">Disclaimer: Reports and models are for educational purposes only. Not investment advice. Consult a SEBI-registered advisor before investing.</span>
+</footer>
+
+<script>
+// Logo (injected at build time by embed script)
+const LOGO = "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";
+document.getElementById('navLogo').src = "data:image/png;base64," + LOGO;
+
+// ── FILE
+function handleFile(e) {
+  const f = e.target.files[0];
+  if (!f) return;
+  const el = document.getElementById('fname');
+  el.textContent = "✅ " + f.name + " (" + (f.size/1024).toFixed(0) + " KB)";
+  el.style.display = "block";
+  document.getElementById('uploadZone').style.borderColor = "#16a34a";
+}
+function fileToB64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(",")[1]);
+    r.onerror = () => rej(new Error("File read failed"));
+    r.readAsDataURL(file);
+  });
+}
+
+// ── STEPS ANIMATION
+let stepTimer;
+function startSteps() {
+  const ids = ["s1","s2","s3","s4"];
+  ids.forEach(id => document.getElementById(id).className = "");
+  let i = 0;
+  stepTimer = setInterval(() => {
+    if (i > 0) document.getElementById(ids[i-1]).className = "done";
+    if (i < ids.length) { document.getElementById(ids[i]).className = "active"; i++; }
+    else clearInterval(stepTimer);
+  }, 4000);
+}
+function stopSteps() {
+  clearInterval(stepTimer);
+  ["s1","s2","s3","s4"].forEach(id => document.getElementById(id).className = "done");
+}
+
+function showErr(msg) {
+  const b = document.getElementById('errBox');
+  b.textContent = "❌ " + msg;
+  b.classList.add("show");
+}
+function clearErr() { document.getElementById('errBox').classList.remove("show"); }
+
+// ── EXTRACT — calls Netlify Function (your API key stays on server)
+async function doExtract() {
+  clearErr();
+  const company  = document.getElementById('companyName').value.trim();
+  const year     = document.getElementById('financialYear').value;
+  const sector   = document.getElementById('sector').value;
+  const currency = document.getElementById('currency').value;
+  const fileEl   = document.getElementById('pdfFile');
+
+  if (!company) { showErr("Please enter the company name."); return; }
+
+  const btn  = document.getElementById('extractBtn');
+  const spin = document.getElementById('spinWrap');
+  const res  = document.getElementById('resultBox');
+  btn.disabled = true;
+  spin.classList.add("show");
+  res.classList.remove("show");
+  startSteps();
+
+  try {
+    const payload = { company, year, sector, currency };
+
+    if (fileEl.files[0]) {
+      payload.pdfBase64 = await fileToB64(fileEl.files[0]);
+    }
+
+    // ↓↓ This calls YOUR Netlify serverless function — API key is never in the browser ↓↓
+    const r = await fetch("/.netlify/functions/extract", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      throw new Error(e.error || ("Server error " + r.status));
+    }
+
+    const data = await r.json();
+    stopSteps();
+    renderResults(data, company, year);
+  } catch(err) {
+    stopSteps();
+    showErr(err.message);
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => spin.classList.remove("show"), 400);
+  }
+}
+
+// ── RENDER
+function renderResults(data, company, year) {
+  document.getElementById('resTitle').textContent = "Extracted Financials — " + company + " (" + year + ")";
+  document.getElementById('resBadge').textContent = company.split(" ").slice(0,2).join(" ");
+
+  const s = data.summary || {};
+  const cardDefs = [
+    ["Total Revenue",   s.total_revenue,              s.revenue_growth],
+    ["EBITDA",          s.ebitda,                     (s.ebitda_margin||"") + " margin"],
+    ["Net Profit",      s.net_profit,                 (s.net_profit_margin||"") + " margin"],
+    ["EPS",             s.eps,                        ""],
+    ["Gross Margin",    s.gross_profit_margin,        ""],
+    ["ROE",             s.return_on_equity,           ""],
+    ["ROCE",            s.return_on_capital_employed, ""],
+    ["Debt / Equity",   s.debt_to_equity,             ""],
+    ["Current Ratio",   s.current_ratio,              ""],
+  ];
+  document.getElementById('resGrid').innerHTML = cardDefs.map(([l,v,sub]) => `
+    <div class="rc">
+      <div class="rc-label">${l}</div>
+      <div class="rc-value">${v||"—"}</div>
+      ${sub ? `<div class="rc-sub">${sub}</div>` : ""}
+    </div>`).join("");
+
+  const t = data.trend_table || {};
+  const yrs = t.years || [];
+  document.getElementById('tHead').innerHTML = "<th>Metric</th>" + yrs.map(y=>`<th>${y}</th>`).join("");
+  const rows = [
+    ["Revenue", t.revenue],
+    ["EBITDA Margin", t.ebitda_margin],
+    ["Net Profit Margin", t.net_profit_margin],
+    ["Return on Equity", t.roe]
+  ];
+  document.getElementById('tBody').innerHTML = rows.map(([l,vals]) =>
+    `<tr><td><strong>${l}</strong></td>${(vals||[]).map(v=>`<td>${v}</td>`).join("")}</tr>`
+  ).join("");
+
+  const ins = data.key_insights || [];
+  document.getElementById('insightsWrap').innerHTML = ins.length
+    ? `<div class="insights-box"><div style="font-size:.8rem;font-weight:700;color:var(--navy);margin-bottom:.6rem">📌 Key Insights</div>${ins.map(i=>`<div class="insight-item">${i}</div>`).join("")}</div>`
+    : "";
+
+  document.getElementById('resultBox').classList.add("show");
+  setTimeout(() => document.getElementById('resultBox').scrollIntoView({behavior:"smooth",block:"start"}), 100);
+}
+
+// ── MODALS
+const MODALS = {
+  sunpharma: {
+    title: "💊 Sun Pharmaceuticals Industries Ltd. — Research Report",
+    html: `<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <div style="background:var(--bg);padding:1rem;border-radius:8px"><div style="font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem">Recommendation</div><div style="font-size:1.1rem;font-weight:700;color:#b45309">IGNORE / HOLD</div></div>
+      <div style="background:var(--bg);padding:1rem;border-radius:8px"><div style="font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem">DCF Fair Value</div><div style="font-size:1.1rem;font-weight:700;color:var(--navy)">₹1,152 / share</div></div>
+      <div style="background:var(--bg);padding:1rem;border-radius:8px"><div style="font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem">Current Market Price</div><div style="font-size:1.1rem;font-weight:700;color:var(--navy)">₹1,818</div></div>
+      <div style="background:var(--bg);padding:1rem;border-radius:8px"><div style="font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem">EBITDA Margin FY25</div><div style="font-size:1.1rem;font-weight:700;color:var(--green)">28.69%</div></div>
+    </div>
+    <p style="font-size:.85rem;line-height:1.7;color:#444;margin-bottom:1.25rem"><strong>Sun Pharmaceutical Industries Limited</strong> is India's largest pharmaceutical company. FY25 revenue of ₹5,25,784 Mn (+9% YoY), expanding EBITDA margins, net cash-positive balance sheet. Current market price of ₹1,818 is significantly above DCF-derived fair value of ₹1,152.</p>
+    <table style="width:100%;border-collapse:collapse;font-size:.8rem">
+      <thead><tr style="background:var(--navy);color:#fff"><th style="padding:.6rem;text-align:left">Metric</th><th style="padding:.6rem">FY22</th><th style="padding:.6rem">FY23</th><th style="padding:.6rem">FY24</th><th style="padding:.6rem">FY25</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:.6rem;font-weight:600">Revenue (₹Mn)</td><td style="padding:.6rem;text-align:center">3,86,545</td><td style="padding:.6rem;text-align:center">4,38,857</td><td style="padding:.6rem;text-align:center">4,84,969</td><td style="padding:.6rem;text-align:center;font-weight:700">5,25,784</td></tr>
+        <tr style="border-bottom:1px solid var(--border);background:var(--bg)"><td style="padding:.6rem;font-weight:600">EBITDA Margin</td><td style="padding:.6rem;text-align:center">26.50%</td><td style="padding:.6rem;text-align:center">26.83%</td><td style="padding:.6rem;text-align:center">26.78%</td><td style="padding:.6rem;text-align:center;font-weight:700">28.69%</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:.6rem;font-weight:600">Net Profit Margin</td><td style="padding:.6rem;text-align:center">8.81%</td><td style="padding:.6rem;text-align:center">19.51%</td><td style="padding:.6rem;text-align:center">19.89%</td><td style="padding:.6rem;text-align:center;font-weight:700">20.88%</td></tr>
+        <tr style="background:var(--bg)"><td style="padding:.6rem;font-weight:600">Return on Equity</td><td style="padding:.6rem;text-align:center">7.09%</td><td style="padding:.6rem;text-align:center">15.29%</td><td style="padding:.6rem;text-align:center">15.15%</td><td style="padding:.6rem;text-align:center;font-weight:700">15.20%</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:1.25rem;padding:.85rem;background:#fef9c3;border-radius:8px;font-size:.78rem;color:#78350f;border:1px solid #fde68a">⚠️ <strong>Valuation:</strong> DCF ₹1,152 vs CMP ₹1,818 — ~58% premium to intrinsic value. Relative range: ₹959–₹1,268.</div>`
+  },
+  awl: {
+    title: "🌾 AWL Agri Business Ltd. — Research Report",
+    html: `<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <div style="background:var(--bg);padding:1rem;border-radius:8px"><div style="font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem">Recommendation</div><div style="font-size:1.1rem;font-weight:700;color:#15803d">BUY</div></div>
+      <div style="background:var(--bg);padding:1rem;border-radius:8px"><div style="font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem">DCF Fair Value</div><div style="font-size:1.1rem;font-weight:700;color:var(--navy)">₹193.84 / share</div></div>
+      <div style="background:var(--bg);padding:1rem;border-radius:8px"><div style="font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem">Current Market Price</div><div style="font-size:1.1rem;font-weight:700;color:var(--navy)">₹183.20</div></div>
+      <div style="background:var(--bg);padding:1rem;border-radius:8px"><div style="font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem">Revenue FY25</div><div style="font-size:1.1rem;font-weight:700;color:var(--green)">₹63,672 Cr (+24.2%)</div></div>
+    </div>
+    <p style="font-size:.85rem;line-height:1.7;color:#444;margin-bottom:1.25rem"><strong>AWL Agri Business Limited</strong> (formerly Adani Wilmar) is India's leading edible oil & FMCG company (Fortune, Kohinoor). FY25 net profit surged from ₹148 Cr to ₹1,224.81 Cr on raw material normalisation and operating leverage.</p>
+    <table style="width:100%;border-collapse:collapse;font-size:.8rem">
+      <thead><tr style="background:var(--navy);color:#fff"><th style="padding:.6rem;text-align:left">Metric</th><th style="padding:.6rem">FY22</th><th style="padding:.6rem">FY23</th><th style="padding:.6rem">FY24</th><th style="padding:.6rem">FY25</th><th style="padding:.6rem">FY26E</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:.6rem;font-weight:600">Revenue (₹ Cr)</td><td style="padding:.6rem;text-align:center">54,213</td><td style="padding:.6rem;text-align:center">58,184</td><td style="padding:.6rem;text-align:center">51,261</td><td style="padding:.6rem;text-align:center;font-weight:700">63,672</td><td style="padding:.6rem;text-align:center;color:var(--blue-light)">74,730E</td></tr>
+        <tr style="border-bottom:1px solid var(--border);background:var(--bg)"><td style="padding:.6rem;font-weight:600">EBITDA Margin</td><td style="padding:.6rem;text-align:center">3.20%</td><td style="padding:.6rem;text-align:center">2.85%</td><td style="padding:.6rem;text-align:center">2.21%</td><td style="padding:.6rem;text-align:center;font-weight:700">3.90%</td><td style="padding:.6rem;text-align:center;color:var(--blue-light)">2.85%E</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:.6rem;font-weight:600">Net Profit Margin</td><td style="padding:.6rem;text-align:center">1.48%</td><td style="padding:.6rem;text-align:center">1.00%</td><td style="padding:.6rem;text-align:center">0.50%</td><td style="padding:.6rem;text-align:center;font-weight:700">1.92%</td><td style="padding:.6rem;text-align:center;color:var(--blue-light)">1.40%E</td></tr>
+        <tr style="background:var(--bg)"><td style="padding:.6rem;font-weight:600">Return on Equity</td><td style="padding:.6rem;text-align:center">—</td><td style="padding:.6rem;text-align:center">7.38%</td><td style="padding:.6rem;text-align:center">3.09%</td><td style="padding:.6rem;text-align:center;font-weight:700">13.81%</td><td style="padding:.6rem;text-align:center;color:var(--blue-light)">10.52%E</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:1.25rem;padding:.85rem;background:#dcfce7;border-radius:8px;font-size:.78rem;color:#14532d;border:1px solid #86efac">✅ <strong>Buy Signal:</strong> ~5% discount to DCF intrinsic value. Strong FY25 turnaround, healthy OCF ₹2,149 Cr, low D/E &lt;0.2x. Target: ₹194–200 over 12–18 months.</div>`
+  }
+};
+function openModal(id) {
+  const d = MODALS[id];
+  document.getElementById('mTitle').textContent = d.title;
+  document.getElementById('mBody').innerHTML = d.html;
+  document.getElementById('overlay').classList.add('open');
+}
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
